@@ -1,6 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { DefaultSeo } from "next-seo";
+import { AppProvider } from "./providers";
+import SeoWrapper from "@/components/layout/SeoWrapper";
+import ClientWrapper from "@/components/layout/ClientWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,23 +23,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full bg-white">
-      <head>
-        <DefaultSeo
-          openGraph={{
-            type: "website",
-            locale: "en_US",
-            url: siteUrl,
-            siteName: siteName,
-          }}
-          twitter={{
-            handle: "@handle",
-            site: "@site",
-            cardType: "summary_large_image",
-          }}
-        />
-      </head>
       <body className={`${inter.className} h-full antialiased`}>
-        <div id="app-root">{children}</div>
+        <AppProvider>
+          <ClientWrapper>
+            <SeoWrapper siteName={siteName} siteUrl={siteUrl} />
+            {children}
+          </ClientWrapper>
+        </AppProvider>
       </body>
     </html>
   );
